@@ -1,0 +1,7 @@
+# Visual Studio ignores
+.vs/
+CppProperties.json
+CMakeSettings.json
+
+# CMake ignores
+build/
