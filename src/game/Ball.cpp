@@ -2,20 +2,15 @@
 
 namespace MMORPG
 {
-    Ball::Ball(int x, int y) :
-        position(x, y)
-    {
-
-    }
-
     bool Ball::OnUserCreate()
     {
         return true;
     }
 
-    bool Ball::OnUserUpdate(olc::PixelGameEngine* pge)
+    bool Ball::OnUserUpdate(float fElapsedTime, olc::PixelGameEngine* pge)
     {
-        pge->FillCircle(position, 3);
+        _position += (_trajectory * fElapsedTime);
+        pge->FillCircle(_position, 3, _color);
         return true;
     }
 }

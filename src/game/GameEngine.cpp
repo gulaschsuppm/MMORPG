@@ -11,6 +11,7 @@ namespace MMORPG
 
     bool GameEngine::OnUserCreate()
     {
+        game_objects.push_back(std::move(std::make_unique<Ball>(float(ScreenWidth())/2.0f, float(ScreenHeight())/2.0f)));
         for (auto game_object = game_objects.begin(); game_object != game_objects.end(); ++game_object)
         {
             (*game_object)->OnUserCreate();
@@ -24,14 +25,24 @@ namespace MMORPG
 
         if (GetMouse(0).bPressed)
         {
-            game_objects.clear();
-            game_objects.push_back(std::move(std::make_unique<Ball>(GetMouseX(), GetMouseY())));
+            float x_traj = 250.0f;
+            float y_traj = 250.0f;
+            if (GetMouseX() < (ScreenWidth() / 2.0f))
+            {
+                x_traj = -x_traj;
+            }
+            if (GetMouseY() < (ScreenWidth() / 2.0f))
+            {
+                y_traj = -y_traj;
+            }
+            game_objects.push_back(std::move(std::make_unique<Ball>(float(ScreenWidth()) / 2.0f, float(ScreenHeight()) / 2.0f, olc::RED, x_traj, y_traj)));
         }
 
         for (auto game_object = game_objects.begin(); game_object != game_objects.end(); ++game_object)
         {
-            (*game_object)->OnUserUpdate(this);
+            (*game_object)->OnUserUpdate(fElapsedTime, this);
         }
+
         return true;
     }
 }
