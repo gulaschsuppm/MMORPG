@@ -3,6 +3,11 @@
 
 namespace MMORPG
 {
+    class GameEngine;
+}
+
+namespace MMORPG
+{
     class GameObject
     {
     public:
@@ -12,8 +17,14 @@ namespace MMORPG
             _trajectory(x_traj, y_tray)
         {}
 
+        GameObject(olc::vf2d pos, olc::Pixel color = olc::WHITE, olc::vf2d traj = { 0.0f,0.0f }) :
+            _position(pos),
+            _color(color),
+            _trajectory(traj)
+        {}
+
         virtual bool OnUserCreate() = 0;
-        virtual bool OnUserUpdate(float fElapsedTime, olc::PixelGameEngine* pge) = 0;
+        virtual bool OnUserUpdate(float fElapsedTime, GameEngine* game_engine) = 0;
         olc::vf2d GetPosition() { return _position; }
 
     protected:

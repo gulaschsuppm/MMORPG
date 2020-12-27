@@ -1,6 +1,7 @@
 #pragma once
 #include "olcPixelGameEngine.h"
 #include "GameObject.hpp"
+#include "InputListener.hpp"
 
 namespace MMORPG
 {
@@ -9,11 +10,13 @@ namespace MMORPG
 	public:
 		GameEngine() { sAppName = "Game"; }
 
-		bool RegisterObject(std::unique_ptr<GameObject> object);
+		void AddObject(std::shared_ptr<GameObject> object);
+		void AddInputRegister(std::shared_ptr<InputListener> object);
 		bool OnUserCreate() override;
 		bool OnUserUpdate(float fElapsedTime) override;
 
 	private:
-		std::vector<std::unique_ptr<GameObject>> game_objects;
+		std::list<std::shared_ptr<InputListener>> _input_listeners;
+		std::list<std::shared_ptr<GameObject>> _game_objects;
 	};
 }
