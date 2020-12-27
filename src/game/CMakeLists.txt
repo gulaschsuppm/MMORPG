@@ -4,6 +4,7 @@ add_library(GameEngine
             "GameEngine.cpp"
             "Ball.cpp"
             "Player.cpp"
+            "PhysicsEngine.cpp"
             )
 
 target_include_directories(GameEngine PUBLIC

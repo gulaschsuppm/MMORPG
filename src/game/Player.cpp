@@ -10,7 +10,8 @@ namespace MMORPG
             olc::vf2d center = { float(game_engine->ScreenWidth()) / 2.0f, float(game_engine->ScreenHeight()) / 2.0f };
             olc::vf2d mouse_pos = { float(game_engine->GetMouseX()), float(game_engine->GetMouseY()) };
             std::shared_ptr<Ball> projectile = std::make_shared<Ball>(center, olc::RED, mouse_pos - center);
-            game_engine->AddObject(projectile);
+            game_engine->AddPhysicalObject(projectile);
+            game_engine->AddDrawingObject(projectile);
         }
 
         return true;

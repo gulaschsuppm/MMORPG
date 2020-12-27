@@ -4,9 +4,14 @@
 
 namespace MMORPG
 {
-    void GameEngine::AddObject(std::shared_ptr<GameObject> object)
+    void GameEngine::AddDrawingObject(std::shared_ptr<DrawingObject> object)
     {
-        _game_objects.push_back(object);
+        _drawing_objects.push_back(object);
+    }
+
+    void GameEngine::AddPhysicalObject(std::shared_ptr<PhysicalObject> object)
+    {
+        _physics_engine.AddObject(object);
     }
 
     void GameEngine::AddInputRegister(std::shared_ptr<InputListener> object)
@@ -17,15 +22,11 @@ namespace MMORPG
     bool GameEngine::OnUserCreate()
     {
         // Create a player in the middle
-        std::shared_ptr<Player> player = std::make_shared<Player>(float(ScreenWidth()) / 2.0f, float(ScreenHeight()) / 2.0f);
+        olc::vf2d pos = { float(ScreenWidth()) / 2.0f, float(ScreenHeight()) / 2.0f };
+        std::shared_ptr<Player> player = std::make_shared<Player>(pos);
         AddInputRegister(player);
-        AddObject(player);
+        AddDrawingObject(player);
 
-        // Cycle through all the game objects at this point and let them start up
-        for (auto game_object = _game_objects.begin(); game_object != _game_objects.end(); ++game_object)
-        {
-            (*game_object)->OnUserCreate();
-        }
         return true;
     }
 
@@ -33,6 +34,7 @@ namespace MMORPG
     {
         Clear(olc::DARK_BLUE);
 
+        // Cycle through the listeners
         auto listener_it = _input_listeners.begin();
         while (listener_it != _input_listeners.end())
         {
@@ -46,17 +48,19 @@ namespace MMORPG
             }
         }
 
+        _physics_engine.Run(fElapsedTime);
+
         // Cycle through all game objects and delete them if they say so
-        auto game_object_it = _game_objects.begin();
-        while (game_object_it != _game_objects.end())
+        auto game_object_it = _drawing_objects.begin();
+        while (game_object_it != _drawing_objects.end())
         {
-            if ((*game_object_it)->OnUserUpdate(fElapsedTime, this))
+            if ((*game_object_it)->Draw(this))
             {
                 ++game_object_it;
             }
             else
             {
-                game_object_it = _game_objects.erase(game_object_it);
+                game_object_it = _drawing_objects.erase(game_object_it);
             }
         }
 
