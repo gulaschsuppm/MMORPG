@@ -14,6 +14,11 @@ namespace MMORPG
         {
             auto obj = *physical_obj_it;
             auto traj = obj->GetTrajectory();
+            // Apply gravity
+            olc::vf2d gravity = { 0.0f, 100.0f };
+            traj += (gravity * elapsed_time);
+            obj->SetTrajectory(traj);
+            traj = obj->GetTrajectory();
             auto pos = obj->GetPosition();
             obj->SetPosition(pos + (traj * elapsed_time));
         }
