@@ -7,22 +7,23 @@ namespace MMORPG
 {
     class Box
     {
+    public:
         Box() :
-            _size(), _half_size()
+            _size(), _halfsize(), _rigid_body(new RigidBody())
         {}
 
         Box(const Vector& min, const Vector& max) :
-            _size(min - max), _half_size(_size / 2.0f)
+            _size(min - max), _halfsize(_size / 2.0f), _rigid_body(new RigidBody())
         { }
 
         Vector GetMin() const
         {
-            return (_rigid_body.GetPosition() - _half_size);
+            return (_rigid_body->GetPosition() - _halfsize);
         }
 
         Vector GetMax() const
         {
-            return (_rigid_body.GetPosition() + _half_size);
+            return (_rigid_body->GetPosition() + _halfsize);
         }
 
         std::vector<Vector> GetVertices() const
@@ -38,7 +39,7 @@ namespace MMORPG
             vertices.push_back(max);
 
             // TODO: Do not compare in floating point!
-            if (_rigid_body.GetPosition() != 0.0f)
+            if (_rigid_body->GetRotation() != 0.0f)
             {
                 for (auto vec : vertices)
                 {
@@ -49,9 +50,13 @@ namespace MMORPG
             return vertices;
         }
 
+        void SetRigidBody(RigidBody* rb) { _rigid_body = rb; }
+
+        RigidBody* GetRigidBody() const { return _rigid_body; }
+
     private:
         Vector _size;
         Vector _halfsize;
-        RigidBody _rigid_body;
+        RigidBody* _rigid_body;
     };
 }

@@ -3,6 +3,8 @@
 #include "Line.hpp"
 #include "Circle.hpp"
 #include "AABB.hpp"
+#include "Box.hpp"
+#include "Utils.hpp"
 
 namespace MMORPG
 {
@@ -43,12 +45,13 @@ namespace MMORPG
             return ((point.x >= min.x && point.x <= max.x) && (point.y >= min.y && point.y <= max.y));
         }
 
-        //static bool PointInBox(const Vector& point, const Box& box)
-        //{
-        //    auto min = aabb.GetMin();
-        //    auto max = aabb.GetMax();
+        static bool PointInBox(const Vector& point, const Box& box)
+        {
+            auto point_rotated = Utils::Rotate(point, box.GetRigidBody()->GetRotation(), box.GetRigidBody()->GetPosition());
+            auto min = box.GetMin();
+            auto max = box.GetMax();
 
-        //    return ((point.x >= min.x && point.x <= max.x) && (point.y >= min.y && point.y <= max.y));
-        //}
+            return ((point_rotated.x >= min.x && point_rotated.x <= max.x) && (point_rotated.y >= min.y && point_rotated.y <= max.y));
+        }
     };
 }
