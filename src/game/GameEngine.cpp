@@ -1,6 +1,7 @@
 #include "GameEngine.hpp"
 #include "Ball.hpp"
 #include "Player.hpp"
+#include "Vector.hpp"
 
 namespace MMORPG
 {
@@ -22,8 +23,7 @@ namespace MMORPG
     bool GameEngine::OnUserCreate()
     {
         // Create a player in the middle
-        olc::vf2d pos = { float(ScreenWidth()) / 2.0f, float(ScreenHeight()) / 2.0f };
-        std::shared_ptr<Player> player = std::make_shared<Player>(pos);
+        std::shared_ptr<Player> player = std::make_shared<Player>(Vector());
         AddInputRegister(player);
         AddDrawingObject(player);
 

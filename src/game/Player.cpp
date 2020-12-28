@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Vector.hpp"
 
 namespace MMORPG
 {
@@ -7,9 +8,11 @@ namespace MMORPG
         // Check if we are shooting
         if (game_engine->GetMouse(0).bPressed)
         {
-            olc::vf2d center = { float(game_engine->ScreenWidth()) / 2.0f, float(game_engine->ScreenHeight()) / 2.0f };
-            olc::vf2d mouse_pos = { float(game_engine->GetMouseX()), float(game_engine->GetMouseY()) };
-            std::shared_ptr<Ball> projectile = std::make_shared<Ball>(center, olc::RED, mouse_pos - center);
+            // Project to physical engine, which has its origin in the middle of the screen
+            Vector center = { float(game_engine->ScreenWidth()) / 2.0f, float(game_engine->ScreenHeight()) / 2.0f };
+            Vector mouse_pos = { float(game_engine->GetMouseX()), float(game_engine->GetMouseY()) };
+
+            std::shared_ptr<Ball> projectile = std::make_shared<Ball>(Vector(), olc::RED, mouse_pos - center);
             game_engine->AddPhysicalObject(projectile);
             game_engine->AddDrawingObject(projectile);
         }

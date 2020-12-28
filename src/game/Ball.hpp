@@ -8,7 +8,7 @@ namespace MMORPG
     class Ball : public DrawingObject, public PhysicalObject
     {
     public:
-        Ball(olc::vf2d pos, olc::Pixel color = olc::WHITE, olc::vf2d traj = { 0.0f,0.0f }) :
+        Ball(Vector pos, olc::Pixel color = olc::WHITE, Vector traj = { 0.0f,0.0f }) :
             DrawingObject(color), PhysicalObject(pos, traj)
         {}
 

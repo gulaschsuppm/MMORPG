@@ -1,5 +1,7 @@
 #pragma once
 #include "PhysicalObject.hpp"
+#include <memory>
+#include <list>
 
 namespace MMORPG
 {

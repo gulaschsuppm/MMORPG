@@ -4,7 +4,6 @@ add_library(GameEngine
             "GameEngine.cpp"
             "Ball.cpp"
             "Player.cpp"
-            "PhysicsEngine.cpp"
             )
 
 target_include_directories(GameEngine PUBLIC
@@ -12,7 +11,9 @@ target_include_directories(GameEngine PUBLIC
                           )
 
 target_link_libraries(GameEngine PUBLIC
-                      OLC)
+                      OLC
+                      Visuals
+                      PhysicsEngine)
 
 add_executable(Game
                "main.cpp"

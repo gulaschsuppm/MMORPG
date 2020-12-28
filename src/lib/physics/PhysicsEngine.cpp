@@ -1,4 +1,5 @@
 #include "PhysicsEngine.hpp"
+#include "Vector.hpp"
 
 namespace MMORPG
 {
@@ -15,7 +16,7 @@ namespace MMORPG
             auto obj = *physical_obj_it;
             auto traj = obj->GetTrajectory();
             // Apply gravity
-            olc::vf2d gravity = { 0.0f, 100.0f };
+            Vector gravity = { 0.0f, 100.0f };
             traj += (gravity * elapsed_time);
             obj->SetTrajectory(traj);
             traj = obj->GetTrajectory();
