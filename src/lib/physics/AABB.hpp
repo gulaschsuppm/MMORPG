@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector.hpp"
 #include "RigidBody.hpp"
+#include <assert.h>
 
 namespace MMORPG
 {
