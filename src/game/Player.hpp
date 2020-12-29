@@ -11,5 +11,6 @@ namespace MMORPG
         using Ball::Ball;
 
         virtual bool OnInput(GameEngine* game_engine);
+    private:
     };
 }

@@ -3,17 +3,19 @@
 #include "Circle.hpp"
 #include "AABB.hpp"
 #include "Box.hpp"
+#include "DrawingObject.hpp"
 
 namespace MMORPG
 {
     class Renderer
     {
     public:
-        Renderer(olc::PixelGameEngine* game_engine) : pge(game_engine) {}
-        void Draw(const Circle& circle, olc::Pixel color);
-        void Draw(const AABB& aabb, olc::Pixel color);
-        void Draw(const Box& box, olc::Pixel color);
+        Renderer() {}
+
+        void AddObject(std::shared_ptr<DrawingObject> object);
+
+        void Draw(olc::PixelGameEngine* pge, olc::vf2d origin);
     private:
-        olc::PixelGameEngine* pge;
+        std::list<std::shared_ptr<DrawingObject>> _drawing_objects;
     };
 }

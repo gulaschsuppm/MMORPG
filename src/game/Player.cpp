@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "Vector.hpp"
+#include "Square.hpp"
 
 namespace MMORPG
 {
@@ -12,7 +13,8 @@ namespace MMORPG
             Vector center = { float(game_engine->ScreenWidth()) / 2.0f, float(game_engine->ScreenHeight()) / 2.0f };
             Vector mouse_pos = { float(game_engine->GetMouseX()), float(game_engine->GetMouseY()) };
 
-            std::shared_ptr<Ball> projectile = std::make_shared<Ball>(Vector(), olc::RED, mouse_pos - center);
+            std::shared_ptr<Square> projectile = std::make_shared<Square>(Vector(), 0.0f, 10.0f, olc::RED);
+            projectile->SetForce(mouse_pos - center);
             game_engine->AddPhysicalObject(projectile);
             game_engine->AddDrawingObject(projectile);
         }

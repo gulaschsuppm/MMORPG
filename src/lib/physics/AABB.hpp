@@ -1,38 +1,36 @@
 #pragma once
 #include "Vector.hpp"
 #include "RigidBody.hpp"
-#include <assert.h>
 
 namespace MMORPG
 {
-    class AABB
+    class AABB : public RigidBody
     {
     public:
         AABB() :
-            _size(), _half_size(), _rigid_body(new RigidBody())
+            RigidBody(), _length(), _height()
         {}
 
-        AABB(const Vector& min, const Vector& max) : 
-            _size(max - min), _half_size(_size / 2.0f), _rigid_body(new RigidBody())
+        AABB(Vector pos, float l, float h) : 
+            RigidBody(pos), _length(l), _height(h)
         {
-            assert(max.x >= min.x && max.y >= min.y);
-        }
 
-        RigidBody* GetRigidBody() const { return _rigid_body; }
+        }
 
         Vector GetMin() const
         {
-            return (_rigid_body->GetPosition() - _half_size);
+            Vector min = {GetPosition().x - (_length / 2.0f), GetPosition().y - (_height / 2.0f)};
+            return min;
         }
 
         Vector GetMax() const
         {
-            return (_rigid_body->GetPosition() + _half_size);
+            Vector max = { GetPosition().x + (_length / 2.0f), GetPosition().y + (_height / 2.0f) };
+            return max;
         }
 
     private:
-        Vector _size;
-        Vector _half_size;
-        RigidBody* _rigid_body;
+        float _length;
+        float _height;
     };
 }

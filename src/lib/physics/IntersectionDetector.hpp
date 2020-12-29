@@ -47,11 +47,20 @@ namespace MMORPG
 
         static bool PointInBox(const Vector& point, const Box& box)
         {
-            auto point_rotated = Utils::Rotate(point, box.GetRigidBody()->GetRotation(), box.GetRigidBody()->GetPosition());
+            auto point_rotated = Utils::Rotate(point, box.GetRotation(), box.GetPosition());
             auto min = box.GetMin();
             auto max = box.GetMax();
 
             return ((point_rotated.x >= min.x && point_rotated.x <= max.x) && (point_rotated.y >= min.y && point_rotated.y <= max.y));
+        }
+
+        static bool CircleToCircle(const Circle& a, const Circle& b)
+        {
+            // Get vector from center a to center b
+            Vector ray = b.GetPosition() - a.GetPosition();
+            float dist2 = ray.length2();
+            float radix2 = (a.GetRadius() + b.GetRadius()) * (a.GetRadius() + b.GetRadius());
+            return (dist2 <= radix2);
         }
     };
 }

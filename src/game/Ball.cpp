@@ -2,10 +2,10 @@
 
 namespace MMORPG
 {
-    bool Ball::Draw(olc::PixelGameEngine* game_engine)
+    bool Ball::Draw(olc::vf2d origin, olc::PixelGameEngine* game_engine)
     {
-        auto pos = Project(game_engine, _position.x, _position.y);
-        game_engine->FillCircle(pos, 3, _color);
+        olc::vf2d center = { GetPosition().x , GetPosition().y };
+        game_engine->DrawCircle((origin + center), int(GetRadius()), _color);
         return true;
     }
 }

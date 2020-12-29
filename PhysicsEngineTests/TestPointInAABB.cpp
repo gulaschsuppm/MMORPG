@@ -14,10 +14,8 @@ TEST(PointInAABB, R)
     }
 
     {
-        Vector min = {};
-        Vector max = { 5,5 };
-        AABB aabb = {min, max};
-        Vector point = {2,2};
+        Vector point = { 2,2 };
+        AABB aabb = { point, 2,2};
 
         bool in_aabb = IntersectionDetector::PointInAABB(point, aabb);
         EXPECT_TRUE(in_aabb);
@@ -34,9 +32,7 @@ TEST(PointInAABB, R)
     //}
 
     {
-        Vector min = {};
-        Vector max = { 5,5 };
-        AABB aabb = { min, max };
+        AABB aabb = { {0,0}, 5,5 };
         Vector point = { 6,6 };
 
         bool in_aabb = IntersectionDetector::PointInAABB(point, aabb);
@@ -44,9 +40,7 @@ TEST(PointInAABB, R)
     }
 
     {
-        Vector min = {};
-        Vector max = { 5,5 };
-        AABB aabb = { min, max };
+        AABB aabb = { {0,0}, 5,5 };
         Vector point = { -2,-2 };
 
         bool in_aabb = IntersectionDetector::PointInAABB(point, aabb);
@@ -54,9 +48,7 @@ TEST(PointInAABB, R)
     }
 
     {
-        Vector min = {};
-        Vector max = { 5,5 };
-        AABB aabb = { min, max };
+        AABB aabb = { {0,0}, 5,5 };
         Vector point = { -3,-2 };
 
         bool in_aabb = IntersectionDetector::PointInAABB(point, aabb);

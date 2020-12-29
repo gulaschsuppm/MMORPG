@@ -1,29 +1,40 @@
 #pragma once
 #include "Vector.hpp"
-#include "RigidBody.hpp"
+#include "AABB.hpp"
 #include <vector>
+#include "Utils.hpp"
 
 namespace MMORPG
 {
-    class Box
+    class Box : public RigidBody
     {
     public:
         Box() :
-            _size(), _halfsize(), _rigid_body(new RigidBody())
+            RigidBody(), _length(), _height()
         {}
 
-        Box(const Vector& min, const Vector& max) :
-            _size(min - max), _halfsize(_size / 2.0f), _rigid_body(new RigidBody())
-        { }
+        Box(Vector pos, float l, float h) :
+            RigidBody(pos), _length(l), _height(h)
+        {
+
+        }
+
+        Box(Vector vec, float rot, float l, float h) :
+            RigidBody(vec, rot), _length(l), _height(h)
+        {
+
+        }
 
         Vector GetMin() const
         {
-            return (_rigid_body->GetPosition() - _halfsize);
+            Vector min = { GetPosition().x - (_length / 2.0f), GetPosition().y - (_height / 2.0f) };
+            return min;
         }
 
         Vector GetMax() const
         {
-            return (_rigid_body->GetPosition() + _halfsize);
+            Vector max = { GetPosition().x + (_length / 2.0f), GetPosition().y + (_height / 2.0f) };
+            return max;
         }
 
         std::vector<Vector> GetVertices() const
@@ -33,30 +44,29 @@ namespace MMORPG
 
             std::vector<Vector> vertices;
 
-            vertices.push_back(min);
-            vertices.push_back({ min.x, max.y });
-            vertices.push_back({ max.x, min.y });
-            vertices.push_back(max);
+            Vector a = min;
+            Vector b = { min.x, max.y };
+            Vector c = { max.x, min.y };
+            Vector d = max;
 
-            // TODO: Do not compare in floating point!
-            if (_rigid_body->GetRotation() != 0.0f)
+            if (!Utils::Compare(GetRotation(), 0.0f))
             {
-                for (auto vec : vertices)
-                {
-                    // TODO: Rotate the vertices by rotation (degrees)
-                }
+                a = Utils::Rotate(a, GetRotation(), GetPosition());
+                b = Utils::Rotate(b, GetRotation(), GetPosition());
+                c = Utils::Rotate(c, GetRotation(), GetPosition());
+                d = Utils::Rotate(d, GetRotation(), GetPosition());
             }
+
+            vertices.push_back(a);
+            vertices.push_back(b);
+            vertices.push_back(c);
+            vertices.push_back(d);
 
             return vertices;
         }
 
-        void SetRigidBody(RigidBody* rb) { _rigid_body = rb; }
-
-        RigidBody* GetRigidBody() const { return _rigid_body; }
-
     private:
-        Vector _size;
-        Vector _halfsize;
-        RigidBody* _rigid_body;
+        float _length;
+        float _height;
     };
 }

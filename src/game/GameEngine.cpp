@@ -7,10 +7,10 @@ namespace MMORPG
 {
     void GameEngine::AddDrawingObject(std::shared_ptr<DrawingObject> object)
     {
-        _drawing_objects.push_back(object);
+        _renderer.AddObject(object);
     }
 
-    void GameEngine::AddPhysicalObject(std::shared_ptr<PhysicalObject> object)
+    void GameEngine::AddPhysicalObject(std::shared_ptr<RigidBody> object)
     {
         _physics_engine.AddObject(object);
     }
@@ -23,9 +23,11 @@ namespace MMORPG
     bool GameEngine::OnUserCreate()
     {
         // Create a player in the middle
-        std::shared_ptr<Player> player = std::make_shared<Player>(Vector());
+        std::shared_ptr<Player> player = std::make_shared<Player>(Vector(), 3.0f, olc::WHITE);
         AddInputRegister(player);
         AddDrawingObject(player);
+
+        origin = {float(ScreenWidth())/2.0f, float(ScreenHeight()) / 2.0f };
 
         return true;
     }
@@ -50,19 +52,20 @@ namespace MMORPG
 
         _physics_engine.Run(fElapsedTime);
 
-        // Cycle through all game objects and delete them if they say so
-        auto game_object_it = _drawing_objects.begin();
-        while (game_object_it != _drawing_objects.end())
-        {
-            if ((*game_object_it)->Draw(this))
-            {
-                ++game_object_it;
-            }
-            else
-            {
-                game_object_it = _drawing_objects.erase(game_object_it);
-            }
-        }
+        _renderer.Draw(this, origin);
+        //// Cycle through all game objects and delete them if they say so
+        //auto game_object_it = _drawing_objects.begin();
+        //while (game_object_it != _drawing_objects.end())
+        //{
+        //    if ((*game_object_it)->Draw(this))
+        //    {
+        //        ++game_object_it;
+        //    }
+        //    else
+        //    {
+        //        game_object_it = _drawing_objects.erase(game_object_it);
+        //    }
+        //}
 
         return true;
     }
