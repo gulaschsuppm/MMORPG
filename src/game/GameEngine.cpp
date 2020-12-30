@@ -11,8 +11,9 @@ namespace MMORPG
     {
         assert(shape);
         Body* b = new Body(shape, pos);
-        _physics_engine.AddObject(b);
-        _renderer.AddObject(b->shape);
+        _gaming_objects.push_back(b);
+        //_physics_engine.AddObject(b);
+        //_renderer.AddObject(b->shape);
 
         return b;
     }
@@ -70,16 +71,16 @@ namespace MMORPG
             _origin.x -= 1;
             _renderer.SetOrigin(_origin);
         }
-        if (GetKey(olc::UP).bPressed)
-        {
-            _projection.x *= -1;
-            _renderer.SetProjection(_projection);
-        }
-        if (GetKey(olc::DOWN).bPressed)
-        {
-            _projection.y *= -1;
-            _renderer.SetProjection(_projection);
-        }
+        //if (GetKey(olc::UP).bPressed)
+        //{
+        //    _projection *= 0.5f;
+        //    _renderer.SetProjection(_projection);
+        //}
+        //if (GetKey(olc::DOWN).bPressed)
+        //{
+        //    _projection *= 2;
+        //    _renderer.SetProjection(_projection);
+        //}
 
         if (GetMouse(0).bPressed)
         {
@@ -111,8 +112,24 @@ namespace MMORPG
             delete[] vertices;
         }
 
-        _physics_engine.Run(fElapsedTime);
-        _renderer.Run(this);
+        _physics_engine.Run(_gaming_objects, fElapsedTime);
+        _renderer.Run(this, _gaming_objects);
+
+        // Clean up
+        _gaming_objects.remove_if([](auto obj)
+            {
+                if (obj->destroy)
+                {
+                    delete obj;
+                    return true;
+                }
+                return false;
+            });
+
+        std::stringstream ss;
+        ss << "Objects: ";
+        ss << _gaming_objects.size();
+        DrawString(20,20,ss.str());
 
         return true;
     }

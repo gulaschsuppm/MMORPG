@@ -53,6 +53,8 @@ namespace MMORPG
         float dynamicFriction;
         float restitution;
 
+        bool destroy;
+
         // Shape interface
         Shape* shape;
 

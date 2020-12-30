@@ -28,5 +28,6 @@ namespace MMORPG
 		//std::list<std::shared_ptr<InputListener>> _input_listeners;
 		olc::vf2d _origin;
 		olc::vf2d _projection;
+		std::list<Body*> _gaming_objects;
 	};
 }

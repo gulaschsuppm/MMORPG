@@ -5,10 +5,10 @@
 
 namespace MMORPG
 {
-    void PhysicsEngine::AddObject(Body* object)
-    {
-        _physical_objects.push_back(object);
-    }
+    //void PhysicsEngine::AddObject(Body* object)
+    //{
+    //    _physical_objects.push_back(object);
+    //}
 
     void IntegrateForces(Body* b, float dt)
     {
@@ -30,20 +30,20 @@ namespace MMORPG
         IntegrateForces(b, dt);
     }
 
-    void PhysicsEngine::Run(float elapsed_time)
+    void PhysicsEngine::Run(std::list<Body*>& objects, float dt)
     {
-        acc_time += elapsed_time;
+        acc_time += dt;
         if (acc_time > engine_dt)
         {
             acc_time -= engine_dt;
             std::vector<Manifold> contacts;
-            for (uint32_t i = 0; i < _physical_objects.size(); ++i)
+            for (auto body_a_it = objects.begin(); body_a_it != objects.end(); ++body_a_it)
             {
-                Body* A = _physical_objects[i];
+                Body* A = *body_a_it;
 
-                for (uint32_t j = i + 1; j < _physical_objects.size(); ++j)
+                for (auto body_b_it = next(body_a_it); body_b_it != objects.end(); ++body_b_it)
                 {
-                    Body* B = _physical_objects[j];
+                    Body* B = *body_b_it;
                     if (A->im == 0 && B->im == 0)
                         continue;
                     Manifold m(A, B);
@@ -54,8 +54,10 @@ namespace MMORPG
             }
 
             // Integrate forces
-            for (uint32_t i = 0; i < _physical_objects.size(); ++i)
-                IntegrateForces(_physical_objects[i], engine_dt);
+            for (auto body_a_it = objects.begin(); body_a_it != objects.end(); ++body_a_it)
+            {
+                IntegrateForces(*body_a_it, engine_dt);
+            }
 
             // Initialize collision
             for (uint32_t i = 0; i < contacts.size(); ++i)
@@ -67,17 +69,19 @@ namespace MMORPG
                     contacts[i].ApplyImpulse();
 
             // Integrate velocities
-            for (uint32_t i = 0; i < _physical_objects.size(); ++i)
-                IntegrateVelocity(_physical_objects[i], engine_dt);
+            for (auto body_a_it = objects.begin(); body_a_it != objects.end(); ++body_a_it)
+            {
+                IntegrateVelocity(*body_a_it, engine_dt);
+            }
 
             // Correct positions
             for (uint32_t i = 0; i < contacts.size(); ++i)
                 contacts[i].PositionalCorrection();
 
             // Clear all forces
-            for (uint32_t i = 0; i < _physical_objects.size(); ++i)
+            for (auto body_a_it = objects.begin(); body_a_it != objects.end(); ++body_a_it)
             {
-                Body* b = _physical_objects[i];
+                Body* b = *body_a_it;
                 b->force = { 0, 0 };
                 b->torque = 0;
             }

@@ -21,6 +21,7 @@ namespace MMORPG
         r = Utils::Random(0.2f, 1.0f);
         g = Utils::Random(0.2f, 1.0f);
         b = Utils::Random(0.2f, 1.0f);
+        destroy = false;
     }
 
     void Body::SetOrient(float radians)

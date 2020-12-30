@@ -1,7 +1,7 @@
 #pragma once
 #include "Body.hpp"
 #include <memory>
-#include <vector>
+#include <list>
 
 namespace MMORPG
 {
@@ -11,11 +11,11 @@ namespace MMORPG
     {
     public:
         PhysicsEngine() : acc_time(0.0f) {}
-        void AddObject(Body* object);
+        //void AddObject(Body* object);
 
-        void Run(float dt);
+        void Run(std::list<Body*>& objects, float dt);
     private:
         float acc_time;
-        std::vector<Body*> _physical_objects;
+        //std::list<Body*> _physical_objects;
     };
 }

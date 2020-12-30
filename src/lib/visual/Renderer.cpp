@@ -2,21 +2,30 @@
 
 namespace MMORPG
 {
-    void Renderer::AddObject(Shape* object)
-    {
-        _objects.push_back(object);
-    }
+    //void Renderer::AddObject(Shape* object)
+    //{
+    //    _objects.push_back(object);
+    //}
 
-    olc::vf2d Renderer::Transform(olc::vf2d pos)
-    {
-        return (_origin + pos);
-    }
+    //olc::vf2d Renderer::Transform(olc::vf2d pos)
+    //{
+    //    return (_origin + pos);
+    //}
 
-    void Renderer::Run(olc::PixelGameEngine* pge)
+    void Renderer::Run(olc::PixelGameEngine* pge, std::list<Body*> objects)
     {
-        for (auto focus = _objects.begin(); focus != _objects.end(); ++focus)
+        for (auto focus = objects.begin(); focus != objects.end(); ++focus)
         {
-            (*focus)->Draw(pge, _origin, _projection);
+            olc::vf2d visual_center = { (*focus)->position.x, (*focus)->position.y };
+            visual_center = _origin + visual_center * _projection;
+            if (visual_center.x < 0 || visual_center.y < 0 || visual_center.x > pge->ScreenWidth() || visual_center.y > pge->ScreenHeight())
+            {
+                (*focus)->destroy = true;
+            }
+            else
+            {
+                (*focus)->shape->Draw(pge, _origin, _projection);
+            }
         }
     }
 
