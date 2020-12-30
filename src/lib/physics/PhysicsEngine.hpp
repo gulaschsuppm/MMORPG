@@ -1,17 +1,21 @@
 #pragma once
-#include "RigidBody.hpp"
+#include "Body.hpp"
 #include <memory>
-#include <list>
+#include <vector>
 
 namespace MMORPG
 {
+    constexpr float engine_dt = 0.01f;
+
     class PhysicsEngine
     {
     public:
-        void AddObject(std::shared_ptr<RigidBody> object);
+        PhysicsEngine() : acc_time(0.0f) {}
+        void AddObject(Body* object);
 
-        void Run(float elapsed_time);
+        void Run(float dt);
     private:
-        std::list<std::shared_ptr<RigidBody>> _physical_objects;
+        float acc_time;
+        std::vector<Body*> _physical_objects;
     };
 }

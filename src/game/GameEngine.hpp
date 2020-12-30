@@ -1,10 +1,12 @@
 #pragma once
 #include "olcPixelGameEngine.h"
-#include "DrawingObject.hpp"
-#include "RigidBody.hpp"
-#include "InputListener.hpp"
+//#include "DrawingObject.hpp"
+//#include "RigidBody.hpp"
+//#include "InputListener.hpp"
 #include "PhysicsEngine.hpp"
 #include "Renderer.hpp"
+#include "Shape.hpp"
+#include "Body.hpp"
 
 namespace MMORPG
 {
@@ -13,16 +15,18 @@ namespace MMORPG
 	public:
 		GameEngine() { sAppName = "Game"; }
 
-		void AddDrawingObject(std::shared_ptr<DrawingObject> object);
-		void AddPhysicalObject(std::shared_ptr<RigidBody> object);
-		void AddInputRegister(std::shared_ptr<InputListener> object);
+		Body* AddObject(Shape* object, Vector pos);
+		//void AddDrawingObject(std::shared_ptr<Body> object);
+		//void AddPhysicalObject(std::shared_ptr<Body> object);
+		//void AddInputRegister(std::shared_ptr<InputListener> object);
 		bool OnUserCreate() override;
 		bool OnUserUpdate(float fElapsedTime) override;
 
 	private:
 		PhysicsEngine _physics_engine;
 		Renderer _renderer;
-		std::list<std::shared_ptr<InputListener>> _input_listeners;
-		olc::vf2d origin;
+		//std::list<std::shared_ptr<InputListener>> _input_listeners;
+		olc::vf2d _origin;
+		olc::vf2d _projection;
 	};
 }

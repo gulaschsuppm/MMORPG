@@ -2,40 +2,42 @@
 
 namespace MMORPG
 {
-    void Renderer::AddObject(std::shared_ptr<DrawingObject> object)
+    void Renderer::AddObject(Shape* object)
     {
-        _drawing_objects.push_back(object);
+        _objects.push_back(object);
     }
 
-    void Renderer::Draw(olc::PixelGameEngine* pge, olc::vf2d origin)
+    olc::vf2d Renderer::Transform(olc::vf2d pos)
     {
-        // Apply movement
-        for (auto obj_it = _drawing_objects.begin(); obj_it != _drawing_objects.end(); ++obj_it)
+        return (_origin + pos);
+    }
+
+    void Renderer::Run(olc::PixelGameEngine* pge)
+    {
+        for (auto focus = _objects.begin(); focus != _objects.end(); ++focus)
         {
-            (*obj_it)->Draw(origin, pge);
+            (*focus)->Draw(pge, _origin, _projection);
         }
     }
 
-    //void Renderer::Draw(const AABB& aabb, olc::Pixel color)
+    //bool Renderer::DrawObject(olc::PixelGameEngine* pge, Body* body, Circle* circle)
     //{
-    //    auto min = aabb.GetMin();
-    //    auto max = aabb.GetMax();
-    //    olc::vf2d start = { min.x, min.y };
-    //    olc::vf2d size = { max.x - min.x, max.y - min.y };
-    //    _pge->DrawRect(Transform(start), size, color);
+    //    olc::vf2d center = { circle->GetPosition().x , circle->GetPosition().y };
+    //    pge->DrawCircle(Transform(center), int(circle->GetRadius()), olc::WHITE);
+    //    return true;
     //}
 
-    //void Renderer::Draw(const Box& box, olc::Pixel color)
+    //void Renderer::DrawObject(olc::PixelGameEngine* pge, Body* body, Box* box)
     //{
-    //    auto verticles = box.GetVertices();
+    //    auto verticles = box->GetVertices();
 
     //    olc::vf2d a = { verticles[0].x, verticles[0].y };
     //    olc::vf2d b = { verticles[1].x, verticles[1].y };
     //    olc::vf2d c = { verticles[2].x, verticles[2].y };
     //    olc::vf2d d = { verticles[3].x, verticles[3].y };
-    //    _pge->DrawLine(Transform(a), Transform(b), color);
-    //    _pge->DrawLine(Transform(a), Transform(c), color);
-    //    _pge->DrawLine(Transform(b), Transform(d), color);
-    //    _pge->DrawLine(Transform(c), Transform(d), color);
+    //    pge->DrawLine(Transform(a), Transform(b), olc::WHITE);
+    //    pge->DrawLine(Transform(a), Transform(c), olc::WHITE);
+    //    pge->DrawLine(Transform(b), Transform(d), olc::WHITE);
+    //    pge->DrawLine(Transform(c), Transform(d), olc::WHITE);
     //}
 }

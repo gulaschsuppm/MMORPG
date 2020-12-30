@@ -1,5 +1,4 @@
 #include "GameEngine.hpp"
-#include "Ball.hpp"
 
 int main()
 {
