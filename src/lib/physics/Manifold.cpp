@@ -51,7 +51,17 @@ namespace MMORPG
             Vector rb = contacts[i] - B->position;
 
             // Relative velocity
-            Vector rv = B->velocity + rb.cross(B->angularVelocity) - A->velocity - ra.cross(A->angularVelocity);
+            Vector vel_b = B->velocity;
+            Vector vel_a = A->velocity;
+            if (B->isExplosion)
+            {
+                vel_b = normal * -100.0f;
+            }
+            if (A->isExplosion)
+            {
+                vel_a = normal * 100.0f;
+            }
+            Vector rv = vel_b + rb.cross(B->angularVelocity) - vel_a - ra.cross(A->angularVelocity);
 
             // Relative velocity along the normal
             float contactVel = rv.dot(normal);

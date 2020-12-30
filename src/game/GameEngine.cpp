@@ -7,10 +7,10 @@
 
 namespace MMORPG
 {
-    Body* GameEngine::AddObject(Shape* shape, Vector pos)
+    Body* GameEngine::AddObject(Shape* shape, Vector pos, float density)
     {
         assert(shape);
-        Body* b = new Body(shape, pos);
+        Body* b = new Body(shape, pos, density);
         _gaming_objects.push_back(b);
         //_physics_engine.AddObject(b);
         //_renderer.AddObject(b->shape);
@@ -71,11 +71,19 @@ namespace MMORPG
             _origin.x -= 1;
             _renderer.SetOrigin(_origin);
         }
-        //if (GetKey(olc::UP).bPressed)
-        //{
-        //    _projection *= 0.5f;
-        //    _renderer.SetProjection(_projection);
-        //}
+        if (GetKey(olc::UP).bPressed)
+        {
+            // Create explosion at mouse
+            olc::vf2d center = { float(GetMouseX()), float(GetMouseY()) };
+            center = (center - _origin) * _projection;
+
+            Circle c(10.0f);
+            Body* b = AddObject(&c, { center.x, center.y }, 5.0f);
+            b->name = "explosion";
+            b->restitution = 0.0001f;
+            b->SetStatic();
+            b->isExplosion = true;
+        }
         //if (GetKey(olc::DOWN).bPressed)
         //{
         //    _projection *= 2;

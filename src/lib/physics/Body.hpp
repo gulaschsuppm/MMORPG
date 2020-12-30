@@ -8,7 +8,7 @@ namespace MMORPG
 
     struct Body
     {
-        Body(Shape* shape_, Vector pos);
+        Body(Shape* shape_, Vector pos, float density = 1.0f);
 
         void ApplyForce(const Vector& f)
         {
@@ -53,6 +53,7 @@ namespace MMORPG
         float dynamicFriction;
         float restitution;
 
+        bool isExplosion;
         bool destroy;
 
         // Shape interface

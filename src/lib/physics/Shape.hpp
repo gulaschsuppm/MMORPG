@@ -23,7 +23,7 @@ namespace MMORPG
 
         Shape() {}
         virtual Shape* Clone(void) const = 0;
-        virtual void Initialize(void) = 0;
+        virtual void Initialize(float density) = 0;
         virtual void ComputeMass(float density) = 0;
         virtual void SetOrient(float radians) = 0;
         virtual void Draw(olc::PixelGameEngine* pge, const olc::vf2d& origin, const olc::vf2d& proj) const = 0;
@@ -55,9 +55,9 @@ namespace MMORPG
             return new Circle(radius);
         }
 
-        void Initialize(void)
+        void Initialize(float density)
         {
-            ComputeMass(1.0f);
+            ComputeMass(density);
         }
 
         void ComputeMass(float density)
@@ -96,9 +96,9 @@ namespace MMORPG
 
     struct PolygonShape : public Shape
     {
-        void Initialize(void)
+        void Initialize(float density)
         {
-            ComputeMass(1.0f);
+            ComputeMass(density);
         }
 
         Shape* Clone(void) const

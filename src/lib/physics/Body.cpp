@@ -4,7 +4,7 @@
 
 namespace MMORPG
 {
-    Body::Body(Shape* shape_, Vector pos)
+    Body::Body(Shape* shape_, Vector pos, float density)
         : shape(shape_->Clone())
     {
         shape->body = this;
@@ -17,11 +17,12 @@ namespace MMORPG
         staticFriction = 0.5f;
         dynamicFriction = 0.3f;
         restitution = 0.2f;
-        shape->Initialize();
+        shape->Initialize(density);
         r = Utils::Random(0.2f, 1.0f);
         g = Utils::Random(0.2f, 1.0f);
         b = Utils::Random(0.2f, 1.0f);
         destroy = false;
+        isExplosion = false;
     }
 
     void Body::SetOrient(float radians)

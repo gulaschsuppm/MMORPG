@@ -15,7 +15,7 @@ namespace MMORPG
 	public:
 		GameEngine() { sAppName = "Game"; }
 
-		Body* AddObject(Shape* object, Vector pos);
+		Body* AddObject(Shape* object, Vector pos, float density = 1.0f);
 		//void AddDrawingObject(std::shared_ptr<Body> object);
 		//void AddPhysicalObject(std::shared_ptr<Body> object);
 		//void AddInputRegister(std::shared_ptr<InputListener> object);
