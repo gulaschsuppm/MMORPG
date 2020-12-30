@@ -107,8 +107,7 @@ namespace MMORPG
             m->contact_count = 1;
             Vector n = v1 - center;
             n = B->u * n;
-            n.norm();
-            m->normal = n;
+            m->normal = n.norm();
             v1 = B->u * v1 + b->position;
             m->contacts[0] = v1;
         }
@@ -124,8 +123,7 @@ namespace MMORPG
             v2 = B->u * v2 + b->position;
             m->contacts[0] = v2;
             n = B->u * n;
-            n.norm();
-            m->normal = n;
+            m->normal = n.norm();
         }
 
         // Closest to face
@@ -282,7 +280,6 @@ namespace MMORPG
             referenceIndex = faceA;
             flip = false;
         }
-
         else
         {
             RefPoly = B;
@@ -318,8 +315,7 @@ namespace MMORPG
         v2 = RefPoly->u * v2 + RefPoly->body->position;
 
         // Calculate reference face side normal in world space
-        Vector sidePlaneNormal = (v2 - v1);
-        sidePlaneNormal.norm();
+        Vector sidePlaneNormal = (v2 - v1).norm();
 
         // Orthogonalize
         Vector refFaceNormal(sidePlaneNormal.y, -sidePlaneNormal.x);

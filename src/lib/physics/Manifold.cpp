@@ -54,7 +54,7 @@ namespace MMORPG
             Vector rv = B->velocity + rb.cross(B->angularVelocity) - A->velocity - ra.cross(A->angularVelocity);
 
             // Relative velocity along the normal
-            float contactVel =rv.dot(normal);
+            float contactVel = rv.dot(normal);
 
             // Do not resolve if velocities are separating
             if (contactVel > 0)
@@ -74,31 +74,31 @@ namespace MMORPG
             A->ApplyImpulse(-impulse, ra);
             B->ApplyImpulse(impulse, rb);
 
-            //// Friction impulse
-            //rv = B->velocity + rb.cross(B->angularVelocity) - A->velocity - ra.cross(A->angularVelocity);
+            // Friction impulse
+            rv = B->velocity + rb.cross(B->angularVelocity) - A->velocity - ra.cross(A->angularVelocity);
 
-            //Vector t = rv - (normal * rv.dot(normal));
-            //t.norm();
+            Vector t = rv - (normal * rv.dot(normal));
+            t = t.norm();
 
-            //// j tangent magnitude
-            //float jt = -rv.dot(t);
-            //jt /= invMassSum;
-            //jt /= (float)contact_count;
+            // j tangent magnitude
+            float jt = -rv.dot(t);
+            jt /= invMassSum;
+            jt /= (float)contact_count;
 
-            //// Don't apply tiny friction impulses
-            //if (Utils::Compare(jt, 0.0f))
-            //    return;
+            // Don't apply tiny friction impulses
+            if (Utils::Compare(jt, 0.0f))
+                return;
 
-            //// Coulumb's law
-            //Vector tangentImpulse;
-            //if (std::abs(jt) < j * sf)
-            //    tangentImpulse = t * jt;
-            //else
-            //    tangentImpulse = t * -j * df;
+            // Coulumb's law
+            Vector tangentImpulse;
+            if (std::abs(jt) < j * sf)
+                tangentImpulse = t * jt;
+            else
+                tangentImpulse = t * -j * df;
 
-            //// Apply friction impulse
-            //A->ApplyImpulse(-tangentImpulse, ra);
-            //B->ApplyImpulse(tangentImpulse, rb);
+            // Apply friction impulse
+            A->ApplyImpulse(-tangentImpulse, ra);
+            B->ApplyImpulse(tangentImpulse, rb);
         }
     }
 

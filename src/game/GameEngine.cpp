@@ -60,19 +60,40 @@ namespace MMORPG
         //    }
         //}
 
+        if (GetKey(olc::LEFT).bPressed)
+        {
+            _origin.x += 1;
+            _renderer.SetOrigin(_origin);
+        }
+        if (GetKey(olc::RIGHT).bPressed)
+        {
+            _origin.x -= 1;
+            _renderer.SetOrigin(_origin);
+        }
+        if (GetKey(olc::UP).bPressed)
+        {
+            _projection.x *= -1;
+            _renderer.SetProjection(_projection);
+        }
+        if (GetKey(olc::DOWN).bPressed)
+        {
+            _projection.y *= -1;
+            _renderer.SetProjection(_projection);
+        }
+
         if (GetMouse(0).bPressed)
         {
             // Project to physical engine, which has its origin in the middle of the screen
-            Vector center = { float(GetMouseX()), float(GetMouseY()) };
+            olc::vf2d center = { float(GetMouseX()), float(GetMouseY()) };
 
             center = (center - _origin) * _projection;
             Circle c(5.0f);
-            Body* b = AddObject(&c, center);
+            Body* b = AddObject(&c, { center.x, center.y });
             b->name = "new ball";
         }
         if (GetMouse(1).bPressed)
         {
-            Vector center = { float(GetMouseX()), float( GetMouseY()) };
+            olc::vf2d center = { float(GetMouseX()), float( GetMouseY()) };
             center = (center - _origin) * _projection;
 
             PolygonShape poly;
@@ -82,7 +103,7 @@ namespace MMORPG
             for (uint32_t i = 0; i < count; ++i)
                 vertices[i] = { Utils::Random(-e, e), Utils::Random(-e, e) };
             poly.Set(vertices, count);
-            Body* b = AddObject(&poly, center);
+            Body* b = AddObject(&poly, { center.x, center.y });
             b->SetOrient(Utils::Random(-PI, PI));
             b->restitution = 0.2f;
             b->dynamicFriction = 0.2f;

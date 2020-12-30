@@ -8,3 +8,6 @@ add_library(OLC
 
 target_include_directories(OLC PUBLIC
                            "${PROJECT_SOURCE_DIR}/src/lib/olcPixelGameEngine")
+
+#target_compile_definitions(OLC PUBLIC
+#    -DOLC_IGNORE_VEC2D)

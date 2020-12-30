@@ -74,7 +74,7 @@ namespace MMORPG
 
         void Draw(olc::PixelGameEngine* pge, const olc::vf2d& origin, const olc::vf2d& proj) const
         {
-            auto center = origin + (body->position * proj);
+            auto center = origin + (olc::vf2d(body->position.x, body->position.y) * proj);
             pge->DrawCircle(center, int(radius), olc::WHITE);
 
             // Render line within circle so orientation is visible
@@ -84,7 +84,7 @@ namespace MMORPG
             r = { r.x * c - r.y * s, r.x * s + r.y * c };
             r *= radius;
             r = r + body->position;
-            olc::vf2d orientation = origin + (r * proj);
+            olc::vf2d orientation = origin + (olc::vf2d(r.x, r.y) * proj);
             pge->DrawLine(center, orientation, olc::RED);
         }
 
@@ -163,17 +163,19 @@ namespace MMORPG
 
         void Draw(olc::PixelGameEngine* pge, const olc::vf2d& origin, const olc::vf2d& proj) const
         {
+            Vector o(origin.x, origin.y);
+            Vector p(proj.x, proj.y);
             Vector first_v = body->position + u * m_vertices[0];
-            Vector last_v = origin + first_v * proj;
+            Vector last_v = o + first_v * p;
             for (uint32_t i = 1; i < m_vertexCount; ++i)
             {
                 Vector v = body->position + u * m_vertices[i];
-                v = origin + v * proj;
-                pge->DrawLine(last_v, v, olc::GREEN);
+                v = o + v * p;
+                pge->DrawLine(last_v.x, last_v.y, v.x, v.y, olc::GREEN);
                 last_v = v;
             }
-            first_v = origin + first_v * proj;
-            pge->DrawLine(last_v, first_v, olc::GREEN);
+            first_v = o + first_v * p;
+            pge->DrawLine(last_v.x, last_v.y, first_v.x, first_v.y, olc::GREEN);
         }
 
         Type GetType(void) const
